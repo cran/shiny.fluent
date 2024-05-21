@@ -29,49 +29,63 @@ you need to work using the original docs to achieve the desired result.
 }
 \details{
 \itemize{
-\item {\bold{ className }} {\code{string} \cr Additional css class to apply to the Layer}
-\item {\bold{ componentRef }} {\verb{IRefObject<ILayer>} \cr Optional callback to access the ILayer interface. Use this instead of ref for accessing the public methods and properties of the component.}
-\item {\bold{ eventBubblingEnabled }} {\code{boolean} \cr When enabled, Layer allows events to bubble up from Layer content. Traditionally Layer has not had this behavior. This prop preserves backwards compatibility by default while allowing users to opt in to the new event bubbling functionality.}
-\item {\bold{ hostId }} {\code{string} \cr The optional id property provided on a LayerHost that this Layer should render within. The LayerHost does not need to be immediately available but once has been rendered, and if missing, we'll avoid trying to render the Layer content until the host is available. If an id is not provided, we will render the Layer content in a fixed position element rendered at the end of the document.}
-\item {\bold{ insertFirst }} {\code{boolean} \cr Whether the layer should be added as the first child of the host. If true, the layer will be inserted as the first child of the host By default, the layer will be appended at the end to the host}
-\item {\bold{ onLayerDidMount }} {\verb{() => void} \cr Callback for when the layer is mounted.}
-\item {\bold{ onLayerMounted }} {\verb{() => void} \cr Callback for when the layer is mounted.}
-\item {\bold{ onLayerWillUnmount }} {\verb{() => void} \cr Callback for when the layer is unmounted.}
-\item {\bold{ styles }} {\verb{IStyleFunctionOrObject<ILayerStyleProps, ILayerStyles>} \cr Call to provide customized styling that will layer on top of the variant rules}
-\item {\bold{ theme }} {\code{ITheme} \cr Theme provided by HOC.}
+\item \bold{ className } \code{string} \cr Additional css class to apply to the Layer
+\item \bold{ componentRef } \verb{IRefObject<ILayer>} \cr Optional callback to access the ILayer interface. Use this instead of ref for accessing the public methods and properties of the component.
+\item \bold{ eventBubblingEnabled } \code{boolean} \cr When enabled, Layer allows events to bubble up from Layer content. Traditionally Layer has not had this behavior. This prop preserves backwards compatibility by default while allowing users to opt in to the new event bubbling functionality.
+\item \bold{ hostId } \code{string} \cr The optional id property provided on a LayerHost that this Layer should render within. The LayerHost does not need to be immediately available but once has been rendered, and if missing, we'll avoid trying to render the Layer content until the host is available. If an id is not provided, we will render the Layer content in a fixed position element rendered at the end of the document.
+\item \bold{ insertFirst } \code{boolean} \cr Whether the layer should be added as the first child of the host. If true, the layer will be inserted as the first child of the host By default, the layer will be appended at the end to the host
+\item \bold{ onLayerDidMount } \verb{() => void} \cr Callback for when the layer is mounted.
+\item \bold{ onLayerMounted } \verb{() => void} \cr Callback for when the layer is mounted.
+\item \bold{ onLayerWillUnmount } \verb{() => void} \cr Callback for when the layer is unmounted.
+\item \bold{ styles } \verb{IStyleFunctionOrObject<ILayerStyleProps, ILayerStyles>} \cr Call to provide customized styling that will layer on top of the variant rules
+\item \bold{ theme } \code{ITheme} \cr Theme provided by HOC.
 }
 }
 \examples{
+library(shiny)
 library(shiny.fluent)
 
-if (interactive()) {
-  shinyApp(
-    ui = div(
-      style = "margin-top: 60px; border: 1px solid navy; padding: 10px; background: #eee;",
-      Checkbox.shinyInput("useLayer", value = FALSE, label = "Display a message in a layer"),
-      reactOutput("layer")
-    ),
-    server = function(input, output) {
-      output$layer <- renderReact({
-        box <- div(
-          style = "background-color: #60C7FF; margin: 10px; padding: 10px",
-          "Hello!"
-        )
-        if (isTRUE(input$useLayer)) Layer(box)
-      })
-    }
+ui <- function(id) {
+  ns <- NS(id)
+  div(
+    style = "margin-top: 60px; border: 1px solid navy; padding: 10px; background: #eee;",
+    Checkbox.shinyInput(ns("useLayer"), value = FALSE, label = "Display a message in a layer"),
+    reactOutput(ns("layer"))
   )
 }
-library(shiny.fluent)
+
+server <- function(id) {
+  moduleServer(id, function(input, output, session) {
+    output$layer <- renderReact({
+      box <- div(
+        style = "background-color: #60C7FF; margin: 10px; padding: 10px",
+        "Hello!"
+      )
+      if (isTRUE(input$useLayer)) Layer(box)
+    })
+  })
+}
 
 if (interactive()) {
-  shinyApp(
-    ui = div(
-      LayerHost(id = "host", style = list(border = "1px dashed", padding = 10)),
-      "Layer children are rendered in the LayerHost",
-      Layer(hostId = "host", "Content")
-    ),
-    server = function(input, output) {}
+  shinyApp(ui("app"), function(input, output) server("app"))
+}
+library(shiny)
+library(shiny.fluent)
+
+ui <- function(id) {
+  ns <- NS(id)
+  div(
+    LayerHost(id = "host", style = list(border = "1px dashed", padding = 10)),
+    "Layer children are rendered in the LayerHost",
+    Layer(hostId = "host", "Content")
   )
+}
+
+server <- function(id) {
+  moduleServer(id, function(input, output, session) {})
+}
+
+if (interactive()) {
+  shinyApp(ui("app"), function(input, output) server("app"))
 }
 }

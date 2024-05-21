@@ -22,12 +22,12 @@ you need to work using the original docs to achieve the desired result.
 }
 \details{
 \itemize{
-\item {\bold{ as }} {\code{string | React.ComponentClass | React.FunctionComponent} \cr A component that should be used as the root element of the link returned from the Link component.}
-\item {\bold{ componentRef }} {\verb{IRefObject<ILink>} \cr Optional callback to access the ILink interface. Use this instead of ref for accessing the public methods and properties of the component.}
-\item {\bold{ disabled }} {\code{boolean} \cr Whether the link is disabled}
-\item {\bold{ keytipProps }} {\code{IKeytipProps} \cr Optional keytip for this Link}
-\item {\bold{ styles }} {\verb{IStyleFunctionOrObject<ILinkStyleProps, ILinkStyles>} \cr Call to provide customized styling that will layer on top of the variant rules.}
-\item {\bold{ theme }} {\code{ITheme} \cr Theme (provided through customization.)}
+\item \bold{ as } \code{string | React.ComponentClass | React.FunctionComponent} \cr A component that should be used as the root element of the link returned from the Link component.
+\item \bold{ componentRef } \verb{IRefObject<ILink>} \cr Optional callback to access the ILink interface. Use this instead of ref for accessing the public methods and properties of the component.
+\item \bold{ disabled } \code{boolean} \cr Whether the link is disabled
+\item \bold{ keytipProps } \code{IKeytipProps} \cr Optional keytip for this Link
+\item \bold{ styles } \verb{IStyleFunctionOrObject<ILinkStyleProps, ILinkStyles>} \cr Call to provide customized styling that will layer on top of the variant rules.
+\item \bold{ theme } \code{ITheme} \cr Theme (provided through customization.)
 }
 }
 \section{Best practices}{
@@ -49,12 +49,19 @@ you need to work using the original docs to achieve the desired result.
 }
 
 \examples{
+library(shiny)
 library(shiny.fluent)
 
+ui <- function(id) {
+  ns <- NS(id)
+  Link(href = "https://appsilon.com", "Appsilon")
+}
+
+server <- function(id) {
+  moduleServer(id, function(input, output, session) {})
+}
+
 if (interactive()) {
-  shinyApp(
-    ui = Link(href = "https://appsilon.com", "Appsilon"),
-    server = function(input, output) {}
-  )
+  shinyApp(ui("app"), function(input, output) server("app"))
 }
 }

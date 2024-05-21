@@ -40,25 +40,25 @@ you need to work using the original docs to achieve the desired result.
 }
 \details{
 \itemize{
-\item {\bold{ defaultSelectedKeys }} {\code{string[] | number[]} \cr Keys that will be initially used to set selected items. This prop is only used when \code{multiSelect} is true (use \code{defaultSelectedKey} for single select). Mutually exclusive with \code{selectedKeys}.}
-\item {\bold{ dropdownWidth }} {\code{number} \cr Custom width for dropdown. If value is 0, width of the input field is used.}
-\item {\bold{ isDisabled }} {\code{boolean} \cr Deprecated at v0.52.0, use \code{disabled} instead.}
-\item {\bold{ keytipProps }} {\code{IKeytipProps} \cr Optional keytip for this dropdown}
-\item {\bold{ multiSelectDelimiter }} {\code{string} \cr When multiple items are selected, this will be used to separate values in the dropdown input.}
-\item {\bold{ notifyOnReselect }} {\code{boolean} \cr If true, \code{onChange} will still be called when an already-selected item is clicked again in single select mode. (Normally it would not be called in this case.)}
-\item {\bold{ onChange }} {\verb{(event: React.FormEvent<HTMLDivElement>, option?: IDropdownOption, index?: number) => void} \cr Callback for when the selected option changes.}
-\item {\bold{ onChanged }} {\verb{(option: IDropdownOption, index?: number) => void} \cr }
-\item {\bold{ onRenderCaretDown }} {\verb{IRenderFunction<IDropdownProps>} \cr Custom renderer for chevron icon}
-\item {\bold{ onRenderLabel }} {\verb{IRenderFunction<IDropdownProps>} \cr Custom renderer for the label.}
-\item {\bold{ onRenderPlaceholder }} {\verb{IRenderFunction<IDropdownProps>} \cr Custom renderer for placeholder text}
-\item {\bold{ onRenderPlaceHolder }} {\verb{IRenderFunction<IDropdownProps>} \cr Custom renderer for placeholder text}
-\item {\bold{ onRenderTitle }} {\verb{IRenderFunction<IDropdownOption[]>} \cr Custom renderer for selected option displayed in input}
-\item {\bold{ options }} {\code{IDropdownOption[]} \cr Options for the dropdown. If using \code{defaultSelectedKey} or \code{defaultSelectedKeys}, options must be pure for correct behavior.}
-\item {\bold{ placeHolder }} {\code{string} \cr Input placeholder text. Displayed until an option is selected.}
-\item {\bold{ responsiveMode }} {\code{ResponsiveMode} \cr By default, the dropdown will render the standard way for screen sizes \code{large} and above, or in a panel on \code{small} and \code{medium} screens. Manually set this prop to override this behavior.}
-\item {\bold{ selectedKeys }} {\code{string[] | number[] | null} \cr Keys of the selected items, only used when \code{multiSelect} is true (use \code{selectedKey} for single select). If you provide this, you must maintain selection state by observing onChange events and passing a new prop value in when changed. Passing null will clear the selection. Mutually exclusive with \code{defaultSelectedKeys}.}
-\item {\bold{ styles }} {\verb{IStyleFunctionOrObject<IDropdownStyleProps, IDropdownStyles>} \cr Call to provide customized styling that will layer on top of the variant rules.}
-\item {\bold{ theme }} {\code{ITheme} \cr Theme provided by higher order component.}
+\item \bold{ defaultSelectedKeys } \code{string[] | number[]} \cr Keys that will be initially used to set selected items. This prop is only used when \code{multiSelect} is true (use \code{defaultSelectedKey} for single select). Mutually exclusive with \code{selectedKeys}.
+\item \bold{ dropdownWidth } \code{number} \cr Custom width for dropdown. If value is 0, width of the input field is used.
+\item \bold{ isDisabled } \code{boolean} \cr Deprecated at v0.52.0, use \code{disabled} instead.
+\item \bold{ keytipProps } \code{IKeytipProps} \cr Optional keytip for this dropdown
+\item \bold{ multiSelectDelimiter } \code{string} \cr When multiple items are selected, this will be used to separate values in the dropdown input.
+\item \bold{ notifyOnReselect } \code{boolean} \cr If true, \code{onChange} will still be called when an already-selected item is clicked again in single select mode. (Normally it would not be called in this case.)
+\item \bold{ onChange } \verb{(event: React.FormEvent<HTMLDivElement>, option?: IDropdownOption, index?: number) => void} \cr Callback for when the selected option changes.
+\item \bold{ onChanged } \verb{(option: IDropdownOption, index?: number) => void} \cr
+\item \bold{ onRenderCaretDown } \verb{IRenderFunction<IDropdownProps>} \cr Custom renderer for chevron icon
+\item \bold{ onRenderLabel } \verb{IRenderFunction<IDropdownProps>} \cr Custom renderer for the label.
+\item \bold{ onRenderPlaceholder } \verb{IRenderFunction<IDropdownProps>} \cr Custom renderer for placeholder text
+\item \bold{ onRenderPlaceHolder } \verb{IRenderFunction<IDropdownProps>} \cr Custom renderer for placeholder text
+\item \bold{ onRenderTitle } \verb{IRenderFunction<IDropdownOption[]>} \cr Custom renderer for selected option displayed in input
+\item \bold{ options } \code{IDropdownOption[]} \cr Options for the dropdown. If using \code{defaultSelectedKey} or \code{defaultSelectedKeys}, options must be pure for correct behavior.
+\item \bold{ placeHolder } \code{string} \cr Input placeholder text. Displayed until an option is selected.
+\item \bold{ responsiveMode } \code{ResponsiveMode} \cr By default, the dropdown will render the standard way for screen sizes \code{large} and above, or in a panel on \code{small} and \code{medium} screens. Manually set this prop to override this behavior.
+\item \bold{ selectedKeys } \code{string[] | number[] | null} \cr Keys of the selected items, only used when \code{multiSelect} is true (use \code{selectedKey} for single select). If you provide this, you must maintain selection state by observing onChange events and passing a new prop value in when changed. Passing null will clear the selection. Mutually exclusive with \code{defaultSelectedKeys}.
+\item \bold{ styles } \verb{IStyleFunctionOrObject<IDropdownStyleProps, IDropdownStyles>} \cr Call to provide customized styling that will layer on top of the variant rules.
+\item \bold{ theme } \code{ITheme} \cr Theme provided by higher order component.
 }
 }
 \section{Best practices}{
@@ -82,25 +82,85 @@ you need to work using the original docs to achieve the desired result.
 }
 
 \examples{
+# Example 1
+library(shiny)
 library(shiny.fluent)
 
-if (interactive()) {
-  options <- list(
-    list(key = "A", text = "Option A"),
-    list(key = "B", text = "Option B"),
-    list(key = "C", text = "Option C")
-  )
+options <- list(
+  list(key = "A", text = "Option A"),
+  list(key = "B", text = "Option B"),
+  list(key = "C", text = "Option C")
+)
 
-  shinyApp(
-    ui = div(
-      Dropdown.shinyInput("dropdown", value = "A", options = options),
-      textOutput("dropdownValue")
-    ),
-    server = function(input, output) {
-      output$dropdownValue <- renderText({
-        sprintf("Value: \%s", input$dropdown)
-      })
-    }
+ui <- function(id) {
+  ns <- NS(id)
+  div(
+    Dropdown.shinyInput(ns("dropdown"), value = "A", options = options),
+    textOutput(ns("dropdownValue"))
   )
+}
+
+server <- function(id) {
+  moduleServer(id, function(input, output, session) {
+    output$dropdownValue <- renderText({
+      sprintf("Value: \%s", input$dropdown)
+    })
+  })
+}
+
+if (interactive()) {
+  shinyApp(ui("app"), function(input, output) server("app"))
+}
+
+# Example 2
+library(shiny)
+library(shiny.fluent)
+
+# Rendering headers and dividers inside dropdown
+DropdownMenuItemType <- function(type) {
+  JS(paste0("jsmodule['@fluentui/react'].DropdownMenuItemType."), type)
+}
+
+ui <- function(id) {
+  fluentPage(
+    Dropdown(
+      "fruit",
+      label = "Fruit",
+      multiSelect = TRUE,
+      options = list(
+        list(
+          key = "fruitsHeader",
+          text = "Fruit",
+          itemType = DropdownMenuItemType("Header")
+        ),
+        list(key = "apple", text = "Apple"),
+        list(key = "banana", text = "Banana"),
+        list(key = "orange", text = "Orange", disabled = TRUE),
+        list(key = "grape", text = "Grape"),
+        list(
+          key = "divider_1",
+          text = "-",
+          itemType = DropdownMenuItemType("Divider")
+        ),
+        list(
+          key = "vegetablesHeader",
+          text = "Vegetables",
+          itemType = DropdownMenuItemType("Header"
+          )
+        ),
+        list(key = "broccoli", text = "Broccoli"),
+        list(key = "carrot", text = "Carrot"),
+        list(key = "lettuce", text = "Lettuce")
+      )
+    )
+  )
+}
+
+server <- function(id) {
+  moduleServer(id, function(input, output, session) {})
+}
+
+if (interactive()) {
+  shinyApp(ui("app"), function(input, output) server("app"))
 }
 }

@@ -13,6 +13,9 @@ NULL
 NULL
 
 #' @example inst/examples/Button.R
+#' @example inst/examples/Button2.R
+#' @example inst/examples/Button3.R
+#' @example inst/examples/Button4.R
 #' @name Button
 NULL
 
@@ -53,10 +56,13 @@ NULL
 NULL
 
 #' @example inst/examples/DatePicker.R
+#' @example inst/examples/DatePicker2.R
 #' @name DatePicker
 NULL
 
 #' @example inst/examples/DetailsList.R
+#' @example inst/examples/DetailsList2.R
+#' @example inst/examples/DetailsList3.R
 #' @name DetailsList
 NULL
 
@@ -65,10 +71,12 @@ NULL
 NULL
 
 #' @example inst/examples/DocumentCard.R
+#' @example inst/examples/DocumentCard2.R
 #' @name DocumentCard
 NULL
 
 #' @example inst/examples/Dropdown.R
+#' @example inst/examples/Dropdown2.R
 #' @name Dropdown
 NULL
 
@@ -85,6 +93,7 @@ NULL
 NULL
 
 #' @example inst/examples/GroupedList.R
+#' @example inst/examples/GroupedList2.R
 #' @name GroupedList
 NULL
 
@@ -137,6 +146,7 @@ NULL
 NULL
 
 #' @example inst/examples/Nav.R
+#' @example inst/examples/Nav2.R
 #' @name Nav
 NULL
 
@@ -225,15 +235,18 @@ NULL
 NULL
 
 #' @example inst/examples/TextField.R
+#' @example inst/examples/TextField2.R
 #' @name TextField
 NULL
 
 #' Fluent UI themes
 #'
-#' Themes is not a component, but a way to override the default theme in the app.
-#' See https://developer.microsoft.com/en-us/fluentui#/controls/web/themes for details.
+#' `ThemeProvider` is a utility that applies contextual theming to its child components.
+#' See the [official docs](https://developer.microsoft.com/en-us/fluentui#/controls/web/themeprovider)
+#' for details.
 #'
-#' @example inst/examples/Theme.R
+#' @example inst/examples/ThemeProvider.R
+#' @example inst/examples/ThemeProvider2.R
 #' @name Theme
 NULL
 

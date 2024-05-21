@@ -26,23 +26,34 @@ you need to work using the original docs to achieve the desired result.
 }
 \details{
 \itemize{
-\item {\bold{ as }} {\verb{React.ElementType<React.HTMLAttributes<HTMLElement>>} \cr Optionally render the component as another component type or primitive.}
-\item {\bold{ block }} {\code{boolean} \cr Whether the text is displayed as a block element.
+\item \bold{ as } \verb{React.ElementType<React.HTMLAttributes<HTMLElement>>} \cr Optionally render the component as another component type or primitive.
+\item \bold{ block } \code{boolean} \cr Whether the text is displayed as a block element.
+}
 
-Note that in order for ellipsis on overflow to work properly, \code{block} and \code{nowrap} should be set to true.}
-\item {\bold{ nowrap }} {\code{boolean} \cr Whether the text is not wrapped.
+Note that in order for ellipsis on overflow to work properly, \code{block} and \code{nowrap} should be set to true.
+\itemize{
+\item \bold{ nowrap } \code{boolean} \cr Whether the text is not wrapped.
+}
 
-Note that in order for ellipsis on overflow to work properly, \code{block} and \code{nowrap} should be set to true.}
-\item {\bold{ variant }} {\verb{keyof IFontStyles} \cr Optional font type for Text.}
+Note that in order for ellipsis on overflow to work properly, \code{block} and \code{nowrap} should be set to true.
+\itemize{
+\item \bold{ variant } \verb{keyof IFontStyles} \cr Optional font type for Text.
 }
 }
 \examples{
+library(shiny)
 library(shiny.fluent)
 
+ui <- function(id) {
+  ns <- NS(id)
+  Text(variant = "xLarge", "Some text with a nice Fluent UI font")
+}
+
+server <- function(id) {
+  moduleServer(id, function(input, output, session) {})
+}
+
 if (interactive()) {
-  shinyApp(
-    ui = Text(variant = "xLarge", "Some text with a nice Fluent UI font"),
-    server = function(input, output) {}
-  )
+  shinyApp(ui("app"), function(input, output) server("app"))
 }
 }

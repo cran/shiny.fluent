@@ -1,63 +1,93 @@
+library(shiny)
 library(shiny.fluent)
 
-if (interactive()) {
-  items <- list(
-    list(
-      key = "newItem",
+items <- function(ns) {
+  list(
+    CommandBarItem(
+      key = ns("newItem"),
       text = "New",
       cacheKey = "myCacheKey",
+      split = TRUE,
       iconProps = list(iconName = "Add"),
       subMenuProps = list(
         items = list(
-          list(
-            key = "emailMessage",
+          CommandBarItem(
+            key = ns("emailMessage"),
             text = "Email message",
             iconProps = list(iconName = "Mail")
           ),
-          list(
-            key = "calendarEvent",
+          CommandBarItem(
+            key = ns("calendarEvent"),
             text = "Calendar event",
             iconProps = list(iconName = "Calendar")
           )
         )
       )
     ),
-    list(
-      key = "upload",
+    CommandBarItem(
+      key = ns("upload"),
       text = "Upload",
       iconProps = list(iconName = "Upload")
     ),
-    list(
-      key = "share",
+    CommandBarItem(
+      key = ns("share"),
       text = "Share",
       iconProps = list(iconName = "Share")
     ),
-    list(
-      key = "download",
+    CommandBarItem(
+      key = ns("download"),
       text = "Download",
       iconProps = list(iconName = "Download")
     )
   )
+}
 
-  farItems <- list(
-    list(
-      key = "tile",
+farItems <- function(ns) {
+  list(
+    CommandBarItem(
+      key = ns("tile"),
       text = "Grid view",
       ariaLabel = "Grid view",
       iconOnly = TRUE,
       iconProps = list(iconName = "Tiles")
     ),
-    list(
-      key = "info",
+    CommandBarItem(
+      key = ns("info"),
       text = "Info",
       ariaLabel = "Info",
       iconOnly = TRUE,
       iconProps = list(iconName = "Info")
     )
   )
+}
 
-  shinyApp(
-    ui = CommandBar(items = items, farItems = farItems),
-    server = function(input, output) {}
+ui <- function(id) {
+  ns <- NS(id)
+  tagList(
+    CommandBar(
+      items = items(ns),
+      farItems = farItems(ns)
+    ),
+    textOutput(ns("commandBarItems")),
+    CommandBar.shinyInput(
+      inputId = ns("commandBar"),
+      items = items(identity),
+      farItems = farItems(identity)
+    ),
+    textOutput(ns("commandBar"))
   )
+}
+
+server <- function(id) {
+  moduleServer(id, function(input, output, session) {
+    commandBarItemClicked <- reactiveVal()
+    observeEvent(input$newItem, commandBarItemClicked("newItem clicked (explicitly observed)"))
+    observeEvent(input$upload, commandBarItemClicked("upload clicked (explicitly observed)"))
+    output$commandBarItems <- renderText(commandBarItemClicked())
+    output$commandBar <- renderText(input$commandBar)
+  })
+}
+
+if (interactive()) {
+  shinyApp(ui("app"), function(input, output) server("app"))
 }

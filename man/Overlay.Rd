@@ -22,44 +22,56 @@ you need to work using the original docs to achieve the desired result.
 }
 \details{
 \itemize{
-\item {\bold{ allowTouchBodyScroll }} {\code{boolean} \cr Allow body scroll on touch devices. Changing after mounting has no effect.}
-\item {\bold{ className }} {\code{string} \cr Additional css class to apply to the Overlay}
-\item {\bold{ componentRef }} {\verb{IRefObject<IOverlay>} \cr Gets the component ref.}
-\item {\bold{ isDarkThemed }} {\code{boolean} \cr Whether to use the dark-themed overlay.}
-\item {\bold{ onClick }} {\verb{() => void} \cr }
-\item {\bold{ styles }} {\verb{IStyleFunctionOrObject<IOverlayStyleProps, IOverlayStyles>} \cr Call to provide customized styling that will layer on top of the variant rules}
-\item {\bold{ theme }} {\code{ITheme} \cr Theme provided by HOC.}
+\item \bold{ allowTouchBodyScroll } \code{boolean} \cr Allow body scroll on touch devices. Changing after mounting has no effect.
+\item \bold{ className } \code{string} \cr Additional css class to apply to the Overlay
+\item \bold{ componentRef } \verb{IRefObject<IOverlay>} \cr Gets the component ref.
+\item \bold{ isDarkThemed } \code{boolean} \cr Whether to use the dark-themed overlay.
+\item \bold{ onClick } \verb{() => void} \cr
+\item \bold{ styles } \verb{IStyleFunctionOrObject<IOverlayStyleProps, IOverlayStyles>} \cr Call to provide customized styling that will layer on top of the variant rules
+\item \bold{ theme } \code{ITheme} \cr Theme provided by HOC.
 }
 }
 \examples{
+library(shiny)
 library(shiny.fluent)
 
-if (interactive()) {
-  shinyApp(
-    ui = div(
-      DefaultButton.shinyInput("toggleOverlay", text = "Open Overlay"),
-      reactOutput("overlay")
-    ),
-    server = function(input, output) {
-      show <- reactiveVal(FALSE)
-      observeEvent(input$toggleOverlay, show(!show()))
-      output$overlay <- renderReact({
-        if (show()) {
-          Overlay(
-            onClick = JS("function() { Shiny.setInputValue('toggleOverlay', Math.random()); }"),
-            isDarkThemed = TRUE,
+ui <- function(id) {
+  ns <- NS(id)
+  div(
+    DefaultButton.shinyInput(ns("toggleOverlay"), text = "Open Overlay"),
+    reactOutput(ns("overlay"))
+  )
+}
+
+server <- function(id) {
+  moduleServer(id, function(input, output, session) {
+    ns <- session$ns
+    show <- reactiveVal(FALSE)
+    observeEvent(input$toggleOverlay, show(!show()))
+    output$overlay <- renderReact({
+      if (show()) {
+        Overlay(
+          onClick = JS(paste0(
+            "function() {",
+            "  Shiny.setInputValue('", ns("toggleOverlay"), "', Math.random());",
+            "}"
+          )),
+          isDarkThemed = TRUE,
+          div(
+            style = "background: white; width: 50vw; height: 20rem; margin: auto;",
             div(
-              style="background: white; width: 50vw; height: 20rem; margin: auto;",
-              div(
-                style = "padding: 2rem;",
-                h1("Inside Overlay"),
-                p("Click anywhere to hide.")
-              )
+              style = "padding: 2rem;",
+              h1("Inside Overlay"),
+              p("Click anywhere to hide.")
             )
           )
-        }
-      })
-    }
-  )
+        )
+      }
+    })
+  })
+}
+
+if (interactive()) {
+  shinyApp(ui("app"), function(input, output) server("app"))
 }
 }

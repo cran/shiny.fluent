@@ -26,67 +26,75 @@ you need to work using the original docs to achieve the desired result.
 }
 \details{
 \itemize{
-\item {\bold{ key }} {\code{string} \cr Unique id to identify the item.}
-\item {\bold{ keytipProps }} {\code{IKeytipProps} \cr Optional keytip for the overflowSetItem.}
-\item {\bold{ className }} {\code{string} \cr Class name}
-\item {\bold{ componentRef }} {\verb{IRefObject<IOverflowSet>} \cr Gets the component ref.}
-\item {\bold{ doNotContainWithinFocusZone }} {\code{boolean} \cr If true do not contain the OverflowSet inside of a FocusZone, otherwise the OverflowSet will contain a FocusZone. If this is set to true focusZoneProps will be ignored. Use one or the other.}
-\item {\bold{ focusZoneProps }} {\code{IFocusZoneProps} \cr Custom properties for OverflowSet's FocusZone. If doNotContainWithinFocusZone is set to true focusZoneProps will be ignored. Use one or the other.}
-\item {\bold{ items }} {\code{IOverflowSetItemProps[]} \cr An array of items to be rendered by your onRenderItem function in the primary content area}
-\item {\bold{ itemSubMenuProvider }} {\verb{(item: IOverflowSetItemProps) => any[] | undefined} \cr Function that will take in an IOverflowSetItemProps and return the subMenu for that item. If not provided, will use 'item.subMenuProps.items' by default. This is only used if your overflow set has keytips.}
-\item {\bold{ keytipSequences }} {\code{string[]} \cr Optional full keytip sequence for the overflow button, if it will have a keytip.}
-\item {\bold{ onRenderItem }} {\verb{(item: IOverflowSetItemProps) => any} \cr Method to call when trying to render an item.}
-\item {\bold{ onRenderOverflowButton }} {\verb{IRenderFunction<any[]>} \cr Rendering method for overflow button and contextual menu. The argument to the function is the overflowItems passed in as props to this function.}
-\item {\bold{ overflowItems }} {\code{IOverflowSetItemProps[]} \cr An array of items to be passed to overflow contextual menu}
-\item {\bold{ overflowSide }} {\code{'start' | 'end'} \cr Controls wether or not the overflow button is placed at the start or end of the items. This gives a reveresed visual behavior but maintains correct keyboard navigation.}
-\item {\bold{ role }} {\code{string} \cr The role for the OverflowSet.}
-\item {\bold{ styles }} {\verb{IStyleFunctionOrObject<IOverflowSetProps, IOverflowSetStyles>} \cr Call to provide customized styling that will layer on top of the variant rules.}
-\item {\bold{ vertical }} {\code{boolean} \cr Change item layout direction to vertical/stacked. If role is set to \code{menubar}, \code{vertical={true}} will also add proper \code{aria-orientation}.}
+\item \bold{ key } \code{string} \cr Unique id to identify the item.
+\item \bold{ keytipProps } \code{IKeytipProps} \cr Optional keytip for the overflowSetItem.
+\item \bold{ className } \code{string} \cr Class name
+\item \bold{ componentRef } \verb{IRefObject<IOverflowSet>} \cr Gets the component ref.
+\item \bold{ doNotContainWithinFocusZone } \code{boolean} \cr If true do not contain the OverflowSet inside of a FocusZone, otherwise the OverflowSet will contain a FocusZone. If this is set to true focusZoneProps will be ignored. Use one or the other.
+\item \bold{ focusZoneProps } \code{IFocusZoneProps} \cr Custom properties for OverflowSet's FocusZone. If doNotContainWithinFocusZone is set to true focusZoneProps will be ignored. Use one or the other.
+\item \bold{ items } \code{IOverflowSetItemProps[]} \cr An array of items to be rendered by your onRenderItem function in the primary content area
+\item \bold{ itemSubMenuProvider } \verb{(item: IOverflowSetItemProps) => any[] | undefined} \cr Function that will take in an IOverflowSetItemProps and return the subMenu for that item. If not provided, will use 'item.subMenuProps.items' by default. This is only used if your overflow set has keytips.
+\item \bold{ keytipSequences } \code{string[]} \cr Optional full keytip sequence for the overflow button, if it will have a keytip.
+\item \bold{ onRenderItem } \verb{(item: IOverflowSetItemProps) => any} \cr Method to call when trying to render an item.
+\item \bold{ onRenderOverflowButton } \verb{IRenderFunction<any[]>} \cr Rendering method for overflow button and contextual menu. The argument to the function is the overflowItems passed in as props to this function.
+\item \bold{ overflowItems } \code{IOverflowSetItemProps[]} \cr An array of items to be passed to overflow contextual menu
+\item \bold{ overflowSide } \code{'start' | 'end'} \cr Controls wether or not the overflow button is placed at the start or end of the items. This gives a reveresed visual behavior but maintains correct keyboard navigation.
+\item \bold{ role } \code{string} \cr The role for the OverflowSet.
+\item \bold{ styles } \verb{IStyleFunctionOrObject<IOverflowSetProps, IOverflowSetStyles>} \cr Call to provide customized styling that will layer on top of the variant rules.
+\item \bold{ vertical } \code{boolean} \cr Change item layout direction to vertical/stacked. If role is set to \code{menubar}, \code{vertical={true}} will also add proper \code{aria-orientation}.
 }
 }
 \examples{
+library(shiny)
 library(shiny.fluent)
 
-if (interactive()) {
-  items <- list(
-    list(key = "item1", icon = "Add", name = "Link 1"),
-    list(key = "item2", icon = "Upload", name = "Link 2"),
-    list(key = "item3", icon = "Share", name = "Link 3")
-  )
-  overflowItems <- list(
-    list(key = "item4", icon = "Mail", name = "Overflow Link 1"),
-    list(key = "item5", icon = "Calendar", name = "Overflow Link 2")
-  )
-  onRenderItem <- JS("item =>
-    jsmodule['react'].createElement(jsmodule['@fluentui/react'].CommandBarButton, {
-      role: 'menuitem',
-      iconProps: { iconName: item.icon },
-      styles: {
-        root: { padding: '10px' }
-      }
-    })
-  ")
-  onRenderOverflowButton <- JS("overflowItems =>
-    jsmodule['react'].createElement(jsmodule['@fluentui/react'].CommandBarButton, {
-      role: 'menuitem',
-      title: 'More items',
-      styles: {
-        root: { padding: '10px' }
-      },
-      menuIconProps: { iconName: 'More' },
-      menuProps: { items: overflowItems }
-    })
-  ")
+items <- list(
+  list(key = "item1", icon = "Add", name = "Link 1"),
+  list(key = "item2", icon = "Upload", name = "Link 2"),
+  list(key = "item3", icon = "Share", name = "Link 3")
+)
+overflowItems <- list(
+  list(key = "item4", icon = "Mail", name = "Overflow Link 1"),
+  list(key = "item5", icon = "Calendar", name = "Overflow Link 2")
+)
+onRenderItem <- JS("item =>
+  jsmodule['react'].createElement(jsmodule['@fluentui/react'].CommandBarButton, {
+    role: 'menuitem',
+    iconProps: { iconName: item.icon },
+    styles: {
+      root: { padding: '10px' }
+    }
+  })
+")
+onRenderOverflowButton <- JS("overflowItems =>
+  jsmodule['react'].createElement(jsmodule['@fluentui/react'].CommandBarButton, {
+    role: 'menuitem',
+    title: 'More items',
+    styles: {
+      root: { padding: '10px' }
+    },
+    menuIconProps: { iconName: 'More' },
+    menuProps: { items: overflowItems }
+  })
+")
 
-  shinyApp(
-    ui = OverflowSet(
-      vertical = TRUE,
-      items = items,
-      overflowItems = overflowItems,
-      onRenderItem = onRenderItem,
-      onRenderOverflowButton = onRenderOverflowButton
-    ),
-    server = function(input, output) {}
+
+ui <- function(id) {
+  ns <- NS(id)
+  OverflowSet(
+    vertical = TRUE,
+    items = items,
+    overflowItems = overflowItems,
+    onRenderItem = onRenderItem,
+    onRenderOverflowButton = onRenderOverflowButton
   )
+}
+
+server <- function(id) {
+  moduleServer(id, function(input, output, session) {})
+}
+
+if (interactive()) {
+  shinyApp(ui("app"), function(input, output) server("app"))
 }
 }

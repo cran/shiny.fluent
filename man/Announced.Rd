@@ -35,19 +35,25 @@ you need to work using the original docs to achieve the desired result.
 }
 \details{
 \itemize{
-\item {\bold{ "aria-live" }} {\code{'off' | 'polite' | 'assertive'} \cr Priority with which the screen reader should treat updates to this region  @default 'polite'}
-\item {\bold{ as }} {\code{React.ElementType} \cr Optionally render the root of this component as another component type or primitive. The custom type \strong{must} preserve any children or native props passed in.  @default 'div'}
-\item {\bold{ message }} {\code{string} \cr The status message provided as screen reader output}
-\item {\bold{ styles }} {\verb{IStyleFunctionOrObject<\{\}, IAnnouncedStyles>} \cr Call to provide customized styling that will layer on top of the variant rules.}
+\item \bold{ "aria-live" } \code{'off' | 'polite' | 'assertive'} \cr Priority with which the screen reader should treat updates to this region  @default 'polite'
+\item \bold{ as } \code{React.ElementType} \cr Optionally render the root of this component as another component type or primitive. The custom type \strong{must} preserve any children or native props passed in.  @default 'div'
+\item \bold{ message } \code{string} \cr The status message provided as screen reader output
+\item \bold{ styles } \verb{IStyleFunctionOrObject<\{\}, IAnnouncedStyles>} \cr Call to provide customized styling that will layer on top of the variant rules.
 }
 }
 \examples{
+library(shiny)
 library(shiny.fluent)
 
+ui <- function(id) {
+  Announced(message = "Screen reader message")
+}
+
+server <- function(id) {
+  moduleServer(id, function(input, output, session) {})
+}
+
 if (interactive()) {
-  shinyApp(
-    ui = Announced(message = "Screen reader message"),
-    server = function(input, output) {}
-  )
+  shinyApp(ui("app"), function(input, output) server("app"))
 }
 }
